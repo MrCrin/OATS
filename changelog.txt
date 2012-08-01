@@ -1,0 +1,54 @@
+== OATS Changelog
+
+Developed by Michael Crinnion (crin@crin.co.uk)
+
+**********************************************************************************
+
+OATS (α 0.0.1) // Initial alpha build 01 August 2012
+
+	FEATURES	
+		
+		Search
+			- Type in first or last name and receive automatically updated list
+			of students to select from
+			- View student card individually on selection from list
+
+		Mark
+			- Create assessments by class for a chosen assessment area and
+			subject.
+			- Each student assessment includes:
+				- An AFL Comment;
+				- An effort level;
+				- A National Curriculum level.
+			- Save assessment cards individually.
+			- Option to save all cards when more than one unsaved card exists
+			- Form validation which checks for valid NC Level, Effort Level and
+			at least one character in the AFL comment.
+			- All previous assessments are shown in expandable tabs below new
+			assessment forms.
+		
+		View
+			- View all students in a class and their associated previous
+			assessments.
+			
+		Print
+			- Download an A4 PDF for all assessments in a chosen class, assessment
+			area and subject.
+			- PDF is formatted to fit three students on to a page.
+
+	KNOWN ISSUES
+	
+		Search
+			- Searching for a student with a space in their first name returns
+			a blank page (space character is used as delimiter for sub string
+			function used to split search query into first and last name)
+			- Search does not work in some versions of IE
+		
+		Mark
+			- Possible problem with some versions of IE where teacherCode is
+			either not set or isn't passed ot the database.
+			
+		Print
+			- Formatting issues related to dompdf plugin
+				
+**********************************************************************************

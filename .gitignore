@@ -1,0 +1,4 @@
+/.htaccess
+/.htpasswd
+/dompdf
+/php/config.php
