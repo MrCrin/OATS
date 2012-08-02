@@ -2,7 +2,12 @@
 require("config.php");
 require("connect.php");
 
-$result = mysql_query("SELECT * FROM `Student` WHERE name LIKE '$_GET[term]%' OR surname LIKE '$_GET[term]%'");
+$ss = $_GET['term'];
+$ss = str_replace(" ","%",$ss);
+$ss = str_replace("-","%",$ss);
+$ss = $ss."%";
+
+$result = mysql_query("SELECT * FROM `Student` WHERE lcase(concat(`name`,`surname`)) LIKE '$ss' OR lcase(concat(`surname`,`name`)) LIKE '$ss'");
 
 $rows = array();
 while($r = mysql_fetch_assoc($result)) {

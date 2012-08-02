@@ -1,5 +1,5 @@
 @charset "utf-8";
-/* Style Sheet for Tech Assess Main UI */
+/* Style Sheet for OATS Main UI */
 
 ::-webkit-scrollbar {
     width: 15px;
@@ -396,6 +396,19 @@ li .ui-menu-item{
 	top:0px;
 	left:0px;
 	width:583px;
+}
+
+.studentTechClass{
+	height:32px;
+	line-height:32px;
+	font-size:20px;
+	background-color: #04A1E4;
+	color: #fff;
+	padding-right:10px;
+	position:absolute;
+	top:4px;
+	right: 120px;
+	text-align:right;
 }
 
 .studentTarget{

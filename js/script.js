@@ -8,7 +8,7 @@ The code is fully annotated so other people might be able fix it when stuff goes
 
 */
 
-//This defines the function the sets a height for the #main div based on the total height of the window minus the header and footer
+//This defines the function then sets a height for the #main div based on the total height of the window minus the header and footer
 var dynamicPositioning = function() {
     var windowHeight = ($(window).height() - 121);
     $('#main').css("height", (windowHeight + 'px'));
@@ -48,6 +48,42 @@ $(document).ready(function() {
             }
         });
     });
+	
+	//Tab building function 
+	buildTabs = function(url, id){
+		$.getJSON(url, function(data) {		
+			if (($.isEmptyObject(data))) {
+			//Something to do with a student which has no previous assessments?
+			} else {
+				var cardSelector = '#' + id;
+				var prevAssListSelector = '#previousAssessments' + id;
+				$(cardSelector).append(
+				'<ul class="previousAssessments" id="previousAssessments' + id + '"></ul>'
+				);
+				$.each(data, function(key, val) {
+					if (val.updated != null) {
+						prevUpdateString = $.format.date(val.updated, "ddd dd MMM yyyy @ hh:mm a");
+					} else {
+						prevUpdateString = "Never"
+					}
+					$(prevAssListSelector).append(
+					'<li class="previousAssessTab" id="prevTab' + val.idAssessment + '">' + 
+					'<div class="prevTeacher">' + val.teacher + ' </div>' + 
+					'<div class="prevLvl">' + val.ncLevel + '</div>' + 
+					'<div class="prevEff">' + val.effort + '</div>' + 
+					'<div class="prevArea" onClick="expandTab(this)">' + val.assessmentArea + '</div>' + 
+					'<div class="prevCreated">First Created: ' + $.format.date(val.created, "ddd dd MMM yyyy @ hh:mm a") + ' </div>' + 
+					'<div class="prevUpdated">Last Updated: ' + prevUpdateString + ' </div>' + 
+					'<div class="prevSubject">' + val.subjectArea + '</div>' + 
+					'<div class="prevComment">' + val.teacherComment + '</div>' + 
+					'</li>'
+					)
+					tabSelector = "#prevTab" + val.idAssessment
+					$(tabSelector).slideDown(300);
+				});
+			}
+		});
+	}
 
     //Autocomplete search box with names and forms
     $("#searchBoxOATS").autocomplete({
@@ -238,39 +274,7 @@ $(document).ready(function() {
                                     }
                                 });
                                 //Get previous assessments for this student and build tabs
-                                $.getJSON('php/previousAssess.php?sid=' + val.idStudent + '&s=' + subjectCode + '&a=' + areaCode, function(data) {
-                                    
-                                    if (($.isEmptyObject(data))) {
-                                    //Something to do with a student which has no previous assessments?
-                                    } else {
-                                        var cardSelector = '#' + val.idStudent;
-                                        var prevAssListSelector = '#previousAssessments' + val.idStudent;
-                                        $(cardSelector).append(
-                                        '<ul class="previousAssessments" id="previousAssessments' + val.idStudent + '"></ul>'
-                                        );
-                                        $.each(data, function(key, val) {
-                                            if (val.updated != null) {
-                                                prevUpdateString = $.format.date(val.updated, "ddd dd MMM yyyy @ hh:mm a");
-                                            } else {
-                                                prevUpdateString = "Never"
-                                            }
-                                            $(prevAssListSelector).append(
-                                            '<li class="previousAssessTab" id="prevTab' + val.idAssessment + '">' + 
-                                            '<div class="prevTeacher">' + val.teacher + ' </div>' + 
-                                            '<div class="prevLvl">' + val.ncLevel + '</div>' + 
-                                            '<div class="prevEff">' + val.effort + '</div>' + 
-                                            '<div class="prevArea" onClick="expandTab(this)">' + val.assessmentArea + '</div>' + 
-                                            '<div class="prevCreated">First Created: ' + $.format.date(val.created, "ddd dd MMM yyyy @ hh:mm a") + ' </div>' + 
-                                            '<div class="prevUpdated">Last Updated: ' + prevUpdateString + ' </div>' + 
-                                            '<div class="prevSubject">' + val.subjectArea + '</div>' + 
-                                            '<div class="prevComment">' + val.teacherComment + '</div>' + 
-                                            '</li>'
-                                            )
-                                            tabSelector = "#prevTab" + val.idAssessment
-                                            $(tabSelector).slideDown(300);
-                                        });
-                                    }
-                                });
+								buildTabs('php/previousAssess.php?sid=' + val.idStudent + '&s=' + subjectCode + '&a=' + areaCode, val.idStudent);
                             });
                             //Is this a neater solution that using jquery selectors? Should I change them all to this? Who cares? It works.
                             expandTab = function(event) { //Triggered by onClick attribute on tabs in HTML
@@ -402,39 +406,7 @@ $(document).ready(function() {
                             $(this).delay(i * 50).slideDown(300).fadeIn(500);
                         });
                         //Get previous assessments for this student and build tabs
-                        $.getJSON('php/allPreviousAssess.php?sid=' + val.idStudent, function(data) {
-                            
-                            if (($.isEmptyObject(data))) {
-                            //Something to do with a student which has no previous assessments?
-                            } else {
-                                var cardSelector = '#' + val.idStudent;
-                                var prevAssListSelector = '#previousAssessments' + val.idStudent;
-                                $(cardSelector).append(
-                                '<ul class="previousAssessments" id="previousAssessments' + val.idStudent + '"></ul>'
-                                );
-                                $.each(data, function(key, val) {
-                                    if (val.updated != null) {
-                                        prevUpdateString = $.format.date(val.updated, "ddd dd MMM yyyy @ hh:mm a");
-                                    } else {
-                                        prevUpdateString = "Never"
-                                    }
-                                    $(prevAssListSelector).append(
-                                    '<li class="previousAssessTab" id="prevTab' + val.idAssessment + '">' + 
-                                    '<div class="prevTeacher">' + val.teacher + ' </div>' + 
-                                    '<div class="prevLvl">' + val.ncLevel + '</div>' + 
-                                    '<div class="prevEff">' + val.effort + '</div>' + 
-                                    '<div class="prevArea" onClick="expandTab(this)">' + val.assessmentArea + '</div>' + 
-                                    '<div class="prevCreated">First Created: ' + $.format.date(val.created, "ddd dd MMM yyyy @ hh:mm a") + ' </div>' + 
-                                    '<div class="prevUpdated">Last Updated: ' + prevUpdateString + ' </div>' + 
-                                    '<div class="prevSubject">' + val.subjectArea + '</div>' + 
-                                    '<div class="prevComment">' + val.teacherComment + '</div>' + 
-                                    '</li>'
-                                    )
-                                    tabSelector = "#prevTab" + val.idAssessment
-                                    $(tabSelector).slideDown(300);
-                                });
-                            }
-                        });
+						buildTabs('php/allPreviousAssess.php?sid=' + val.idStudent, val.idStudent);
                     });
                     //Is this a neater solution that using jquery selectors? Should I change them all to this? Who cares? It works.
                     expandTab = function(event) { //Triggered by onClick attribute on tabs in HTML
@@ -525,7 +497,7 @@ $(document).ready(function() {
         namesSeperate = searchedValue.split(" ");
         //This fetches a JSON object via a PHP script which queries the database and returns a JSON encoded object, the PHP script is passed a class variable which is set by the menu option which was clicked
         loadMessage = "Loading data for " + namesSeperate[0];
-        $.getJSON('php/oneStudent.php?n=' + namesSeperate[0] + '&s=' + namesSeperate[1], function(data) {
+        $.getJSON('php/oneStudent.php?ss=' + searchedValue, function(data) {
             $('#mainTitle').fadeOut(0);
             $('#action').html('You are viewing ' + searchedValue);
             $('#action').fadeIn(300);
@@ -535,45 +507,14 @@ $(document).ready(function() {
                 $('#mainContent').append(
                 '<div class="studentContainer studentView" id="' + val.idStudent + '">' + 
                 '<div class="studentName">' + val.name + ' ' + val.surname + ' - (' + val.form.substr(0, 1) + '/' + val.form.substr(1, 2) + ')</div>' + 
+                '<div class="studentTechClass">' + val.techClass + '</div>' + 
                 '<div class="studentTarget"> Target: <strong>' + val.target + '</strong></div>' + 
                 '</div>');
                 $(".studentContainer").hide().each(function(i) {
                     $(this).delay(i * 50).slideDown(300).fadeIn(500);
                 });
                 //Get previous assessments for this student and build tabs
-                $.getJSON('php/allPreviousAssess.php?sid=' + val.idStudent, function(data) {
-                    
-                    if (($.isEmptyObject(data))) {
-                    //Something to do with a student which has no previous assessments?
-                    } else {
-                        var cardSelector = '#' + val.idStudent;
-                        var prevAssListSelector = '#previousAssessments' + val.idStudent;
-                        $(cardSelector).append(
-                        '<ul class="previousAssessments" id="previousAssessments' + val.idStudent + '"></ul>'
-                        );
-                        $.each(data, function(key, val) {
-                            if (val.updated != null) {
-                                prevUpdateString = $.format.date(val.updated, "ddd dd MMM yyyy @ hh:mm a");
-                            } else {
-                                prevUpdateString = "Never"
-                            }
-                            $(prevAssListSelector).append(
-                            '<li class="previousAssessTab" id="prevTab' + val.idAssessment + '">' + 
-                            '<div class="prevTeacher">' + val.teacher + ' </div>' + 
-                            '<div class="prevLvl">' + val.ncLevel + '</div>' + 
-                            '<div class="prevEff">' + val.effort + '</div>' + 
-                            '<div class="prevArea" onClick="expandTab(this)">' + val.assessmentArea + '</div>' + 
-                            '<div class="prevCreated">First Created: ' + $.format.date(val.created, "ddd dd MMM yyyy @ hh:mm a") + ' </div>' + 
-                            '<div class="prevUpdated">Last Updated: ' + prevUpdateString + ' </div>' + 
-                            '<div class="prevSubject">' + val.subjectArea + '</div>' + 
-                            '<div class="prevComment">' + val.teacherComment + '</div>' + 
-                            '</li>'
-                            )
-                            tabSelector = "#prevTab" + val.idAssessment
-                            $(tabSelector).slideDown(300);
-                        });
-                    }
-                });
+				buildTabs('php/allPreviousAssess.php?sid=' + val.idStudent, val.idStudent);
             });
             //Clear search box
             //$('#searchBoxOATS').val("");

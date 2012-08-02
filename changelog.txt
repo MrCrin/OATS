@@ -1,6 +1,43 @@
-== OATS Changelog
+# OATS Changelog
 
-Developed by Michael Crinnion (crin@crin.co.uk)
+##Developed by Michael Crinnion (crin@crin.co.uk)
+
+**********************************************************************************
+
+OATS (α 0.0.2) // New features, bug fixes and some cleanup 02 August 2012
+
+	FEATURES
+	
+		Search
+			- Improved search functionality to continue suggesting names even
+			after a space is entered. (Thanks to Steve James for this)
+			- Added information for which class a returned student belongs to
+			at the top of assessment card.
+			
+	GENERAL
+		- Improved formatting of README.txt
+		- Corrected misleading information regarding config.php in README.txt
+		- Moved tab generation from inline code to global buildTabs() function
+		to reduce file size and make editing easier.
+			
+	BUG FIXES
+	
+		Search
+			- (Issue #1)Fixed blank page load after selecting a suggestion from
+			auto suggest list using the same method which added additional
+			functionality to the auto suggest list (as mentioned above).
+
+	KNOWN ISSUES
+	
+		Search
+			- (#2 0.0.1) Search does not work in some versions of IE.
+		
+		Mark
+			- (#3 0.0.1) Possible problem with some versions of IE where
+			teacherCode is either not set or isn't passed to the database.
+			
+		Print
+			- (#4 0.0.1) Formatting issues related to dompdf plugin.
 
 **********************************************************************************
 
@@ -39,16 +76,16 @@ OATS (α 0.0.1) // Initial alpha build 01 August 2012
 	KNOWN ISSUES
 	
 		Search
-			- Searching for a student with a space in their first name returns
-			a blank page (space character is used as delimiter for sub string
-			function used to split search query into first and last name)
-			- Search does not work in some versions of IE
+			- (#1 0.0.1) Searching for a student with a space in their first name
+			returns a blank page (space character is used as delimiter for substr
+			function used to split search query into first and last name.
+			- (#2 0.0.1) Search does not work in some versions of IE.
 		
 		Mark
-			- Possible problem with some versions of IE where teacherCode is
-			either not set or isn't passed ot the database.
+			- (#3 0.0.1) Possible problem with some versions of IE where
+			teacherCode is either not set or isn't passed to the database.
 			
 		Print
-			- Formatting issues related to dompdf plugin
+			- (#4 0.0.1) Formatting issues related to dompdf plugin.
 				
 **********************************************************************************
