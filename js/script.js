@@ -9,11 +9,13 @@ The code is fully annotated so other people might be able fix it when stuff goes
 */
 
 //This defines the function then sets a height for the #main div based on the total height of the window minus the header and footer
-var dynamicPositioning = function() {
+dynamicPositioning = function() {
     var windowHeight = ($(window).height() - 121);
     $('#main').css("height", (windowHeight + 'px'));
-    var saveAllRightPos = (($(window).width() / 2) - 420);
-    $('#saveAll').css("right", (saveAllRightPos + 'px'));
+    var multiActionButtonsRightPos = (($(window).width() / 2) - 420);
+    $('#saveAll').css("right", (multiActionButtonsRightPos + 'px'));
+    $('#expandAll').css("right", (multiActionButtonsRightPos + 'px'));
+    $('#collapseAll').css("right", (multiActionButtonsRightPos + 'px'));
     var errorTrayRightPos = (($(window).width() / 2) - 100);
     $('#errorTray').css("right", (errorTrayRightPos + 'px'));
     var loadingTrayRightPos = (($(window).width() / 2) - 100);
@@ -27,8 +29,13 @@ var dynamicPositioning = function() {
     }
 }
 
+containerArray =  new Array;
+positionArray =  new Array;
+floatingHeaderArray =  new Array;
+
 //Everything below here waits for the document to be ready
 $(document).ready(function() {
+	
 
     //Header click 'home' effect by reloading page body asynchronously - Unsuprisingly not working properly in IE
     $("header").click(function() {
@@ -49,6 +56,38 @@ $(document).ready(function() {
         });
     });
 	
+	//Delete assessment function
+	deleteAssessment = function(delAssID,event){
+		$("#loadingLightshade").fadeIn(400);
+		loadMessage = "Deleting..."
+		$("#main").append('<div id="dialogConfirm">Are you sure you want to delete this assessment?</div>');
+		$("#dialogConfirm").dialog({
+			buttons: [{
+					text: "Delete",
+					draggable: false,
+					resizeable: false,
+					click: function(){
+						$.post('php/deleteOneAssessment.php?did=' + delAssID, function(result){
+							if (result == 1) {
+								loadMessage = "Deleted"
+								$(event).parent("li").delay(200).slideUp(500).delay(500).remove();
+							} else {
+							}
+						});
+						$(this).dialog("close")
+					;}				
+				},{
+					text: "Leave it",
+					draggable: false,
+					click: function(){
+						$("#loadingLightshade").fadeOut(400);
+						$(this).dialog("close")
+					}
+				}
+			]
+			});
+	}
+		
 	//Tab building function 
 	buildTabs = function(url, id){
 		$.getJSON(url, function(data) {		
@@ -66,12 +105,19 @@ $(document).ready(function() {
 					} else {
 						prevUpdateString = "Never"
 					}
+					//Add delete button only to tabs created by current user
+					if(val.teacher==userCode){
+						deleteButton = '<div class="deleteButton" onClick="deleteAssessment(' + val.idAssessment + ',this)">delete</div>';
+					} else {
+						deleteButton = '';
+					}
 					$(prevAssListSelector).append(
-					'<li class="previousAssessTab" id="prevTab' + val.idAssessment + '">' + 
+					'<li class="previousAssessTab collapsed" id="prevTab' + val.idAssessment + '">' + 
+					deleteButton + 
 					'<div class="prevTeacher">' + val.teacher + ' </div>' + 
 					'<div class="prevLvl">' + val.ncLevel + '</div>' + 
 					'<div class="prevEff">' + val.effort + '</div>' + 
-					'<div class="prevArea" onClick="expandTab(this)">' + val.assessmentArea + '</div>' + 
+					'<div class="prevArea" onClick="toggleTab(this)">' + val.assessmentArea + '</div>' + 
 					'<div class="prevCreated">First Created: ' + $.format.date(val.created, "ddd dd MMM yyyy @ hh:mm a") + ' </div>' + 
 					'<div class="prevUpdated">Last Updated: ' + prevUpdateString + ' </div>' + 
 					'<div class="prevSubject">' + val.subjectArea + '</div>' + 
@@ -83,6 +129,14 @@ $(document).ready(function() {
 				});
 			}
 		});
+	}
+	
+	toggleTab = function(event) { //Triggered by onClick attribute on tabs in HTML
+		if($(event).parent("li").hasClass("collapsed")){
+		$(event).parent("li").switchClass("collapsed","expanded");
+		} else {
+		$(event).parent("li").switchClass("expanded","collapsed");
+		}
 	}
 
     //Autocomplete search box with names and forms
@@ -169,6 +223,14 @@ $(document).ready(function() {
 		return valueMatrix[number-1];
 	}
 	
+	//Expand all / Collapse all tabs functions
+	collapseAll = function(){
+		$(".expanded").children(".prevArea").click().trigger(scroll);
+	}
+	expandAll = function(){
+		$(".collapsed").children(".prevArea").click().trigger(scroll);
+	}
+	
     //This is the main man, this function waits for clicks in the menu and then calls and displays the appropriate data in the #main div	
     $(".menuContent").click(function(event) {
         //Set the action type from the menu that was used
@@ -247,13 +309,14 @@ $(document).ready(function() {
                                 '<div class="studentName">' + val.name + ' ' + val.surname + ' - (' + val.form.substr(0, 1) + '/' + val.form.substr(1, 2) + ')</div>' + 
                                 '<div class="studentTarget"> Target: <strong>' + val.target + '</strong></div>' + 
                                 '<form id="form' + val.idStudent + '">' + 
-                                '<textarea maxlength="400" id="inputAssessComment' + val.idStudent + '" name="commentField" class="inputAssessComment"></textarea>' + 
+                                '<textarea disabled="" maxlength="400" id="inputAssessComment' + val.idStudent + '" name="commentField" class="inputAssessComment"></textarea>' + 
                                 '<label class="inputAssessLevelLabel">Level:</label>' + 
-                                '<input type="text" maxlength="2" id="inputAssessLevel' + val.idStudent + '" name="levelField" class="inputAssessLevel"></input>' + 
+                                '<input disabled="" type="text" maxlength="2" id="inputAssessLevel' + val.idStudent + '" name="levelField" class="inputAssessLevel"></input>' + 
                                 '<label class="inputAssessEffortLabel">Effort:</label>' + 
-                                '<input type="text" maxlength="2" id="inputAssessEffort' + val.idStudent + '" name="effortField" class="inputAssessEffort"></input>' + 
+                                '<input disabled="" type="text" maxlength="2" id="inputAssessEffort' + val.idStudent + '" name="effortField" class="inputAssessEffort"></input>' + 
                                 '</form>' + 
                                 '<div id="save' + val.idStudent + '" class="save">Save</div>' + 
+                                '<div id="editableBy' + val.idStudent + '" class="editableBy"></div>' + 
                                 '<div id="saveInProg' + val.idStudent + '" class="saveInProg"></div>' + 
                                 '</div>');
                                 $(".studentContainer").hide().each(function(i) {
@@ -262,25 +325,32 @@ $(document).ready(function() {
                                 //Set some variable for use in the currentAssess JSON loop
                                 var thisTextBox = "#inputAssessComment" + val.idStudent, 
                                 thisLevelBox = "#inputAssessLevel" + val.idStudent, 
-                                thisEffortBox = "#inputAssessEffort" + val.idStudent;
+                                thisEffortBox = "#inputAssessEffort" + val.idStudent,
+								thisEditableBy = "#editableBy" + val.idStudent;
                                 //Get previous assessment data for this card and load the data into the relevant fields
                                 $.getJSON('php/currentAssess.php?sid=' + val.idStudent + '&a=' + areaCode + '&s=' + subjectCode + '&t=' + userCode, function(data) {
                                     if (($.isEmptyObject(data))) {
-                                    //Something to do with the empty assessment cards?
+											$(thisTextBox).removeAttr("disabled");
+											$(thisLevelBox).removeAttr("disabled");
+											$(thisEffortBox).removeAttr("disabled");
                                     } else {
-                                        $(thisTextBox).val(data[0].teacherComment);
-                                        $(thisLevelBox).val(data[0].ncLevel);
-                                        $(thisEffortBox).val(data[0].effort);
+										if(userCode==data[data.length-1].teacher){
+											$(thisTextBox).fadeOut(200,function(){$(thisTextBox).val(data[data.length-1].teacherComment).removeAttr("disabled").fadeIn(200);});
+											$(thisLevelBox).fadeOut(200,function(){$(thisLevelBox).val(data[data.length-1].ncLevel).removeAttr("disabled").fadeIn(200);});
+											$(thisEffortBox).fadeOut(200,function(){$(thisEffortBox).val(data[data.length-1].effort).removeAttr("disabled").fadeIn(200);});
+										} else {
+											$(thisTextBox).fadeOut(200,function(){$(thisTextBox).val(data[data.length-1].teacherComment).attr("disabled", "disabled").fadeIn(200);});
+											$(thisLevelBox).fadeOut(200,function(){$(thisLevelBox).val(data[data.length-1].ncLevel).attr("disabled", "disabled").fadeIn(200);});
+											$(thisEffortBox).fadeOut(200,function(){$(thisEffortBox).val(data[data.length-1].effort).attr("disabled", "disabled").fadeIn(200);});
+											var thisEditableByStr = 'Only editable by ' + data[data.length-1].teacher;
+											$(thisEditableBy).html(thisEditableByStr).delay(400).fadeIn(500);
+										}
                                     }
                                 });
                                 //Get previous assessments for this student and build tabs
 								buildTabs('php/previousAssess.php?sid=' + val.idStudent + '&s=' + subjectCode + '&a=' + areaCode, val.idStudent);
                             });
-                            //Is this a neater solution that using jquery selectors? Should I change them all to this? Who cares? It works.
-                            expandTab = function(event) { //Triggered by onClick attribute on tabs in HTML
-                                $(event).parent("li").toggleClass("expanded");
-                            }
-                            $('.inputAssessComment, .inputAssessLevel, .inputAssessEffort').bind("keydown focus keyup change", function(event) {
+							$('.inputAssessComment, .inputAssessLevel, .inputAssessEffort').bind("keydown focus keyup change", function(event) {
                                 currentStudentID = $(event.target).closest("div").attr("id");
                                 saveSelector = "#save" + currentStudentID;
                                 assessCmtSelecter = "#inputAssessComment" + currentStudentID;
@@ -395,24 +465,30 @@ $(document).ready(function() {
                     $('#action').html('You are ' + actionIntent + 'ing ' + event.target.id);
                     $('#action').fadeIn(300);
                     $('#mainTitle').fadeIn(300);
+					scrollTopDisplay = $("#main").scrollTop();
+					$('#mainContent').append('<div id="scrollTopDisplay"></div>')
                     dynamicPositioning();
                     $.each(data, function(key, val) {
+						var thisPosition = positionArray[0]
                         $('#mainContent').append(
-                        '<div class="studentContainer studentView" id="' + val.idStudent + '">' + 
+                        '<div class="studentContainer studentView" id="' + val.idStudent + '">' +
                         '<div class="studentName">' + val.name + ' ' + val.surname + ' - (' + val.form.substr(0, 1) + '/' + val.form.substr(1, 2) + ')</div>' + 
-                        '<div class="studentTarget"> Target: <strong>' + val.target + '</strong></div>' + 
+                        '<div class="studentTarget"> Target: <strong>' + val.target + '</strong></div>' +  
                         '</div>');
                         $(".studentContainer").hide().each(function(i) {
+							//$(this).slideDown(0);
                             $(this).delay(i * 50).slideDown(300).fadeIn(500);
-                        });
+                        })
                         //Get previous assessments for this student and build tabs
 						buildTabs('php/allPreviousAssess.php?sid=' + val.idStudent, val.idStudent);
                     });
-                    //Is this a neater solution that using jquery selectors? Should I change them all to this? Who cares? It works.
-                    expandTab = function(event) { //Triggered by onClick attribute on tabs in HTML
-                        $(event).parent("li").toggleClass("expanded");
-                    }
                 });
+				
+                $('#mainContent').append('<div id="expandAll" onClick="expandAll()">Expand</div>');
+                $('#mainContent').append('<div id="collapseAll" onClick="collapseAll()">Collapse</div>');
+				dynamicPositioning();
+				$('#expandAll').delay(300).fadeIn(300);
+				$('#collapseAll').delay(300).fadeIn(300);
                 break;
             case "print":
                 var r = confirm("The print function is not really working yet, it'll produce a PDF but it's not formatted correctly, do you want to give it a go anyways?");
@@ -516,13 +592,6 @@ $(document).ready(function() {
                 //Get previous assessments for this student and build tabs
 				buildTabs('php/allPreviousAssess.php?sid=' + val.idStudent, val.idStudent);
             });
-            //Clear search box
-            //$('#searchBoxOATS').val("");
-            //$('#searchBoxOATS').blur();
-            //Is this a neater solution that using jquery selectors? Should I change them all to this? Who cares? It works.
-            expandTab = function(event) { //Triggered by onClick attribute on tabs in HTML
-                $(event).parent("li").toggleClass("expanded");
-            }
         });
     });
 });

@@ -2,6 +2,35 @@
 
 ##Developed by Michael Crinnion (crin@crin.co.uk)
 
+OATS (α 0.0.3) // New features, some UI polish
+
+	FEATURES
+	
+		Mark
+			- Editing is now disabled for assessment cards previously completed
+			by any user other than yourself to prevent accidental (or deliberate)
+			changing of other teachers assessments. The data is still visible.
+	
+		View
+			- Added 'delete' button to all previous assessment tabs belonging to
+			current user. 'Deleted' rows are timestamped as such in the database
+			but are not actually dropped from the table. Possibility for
+			'recycle bin' feature or 'restore' feature in the future.
+			- Added Expand All and Collaps All buttons
+			
+		UI
+			- Changed modal 'lightshade' effect to also cover top navigation bar
+			to prevent multiple attempts to load one class which can b0rk the
+			Ajax requests (Thanks to Joe Wood for spotting this potential issue)
+			- Minor visual tweaks to the loading and error popups.
+			- Added fadeIn/fadeOut to form fields where existing data is being
+			loaded from the database to avoid ugly 'pop in'.
+			
+	GENERAL	
+		- Removed unnecessary repetition of expandTab() code
+		- Redefined expandTab() as toggleTab() and added 'collapsed' class to tabs
+		as a default
+
 **********************************************************************************
 
 OATS (α 0.0.2) // New features, bug fixes and some cleanup 02 August 2012
@@ -23,7 +52,7 @@ OATS (α 0.0.2) // New features, bug fixes and some cleanup 02 August 2012
 	BUG FIXES
 	
 		Search
-			- (Issue #1)Fixed blank page load after selecting a suggestion from
+			- (Issue fix #1)Fixed blank page load after selecting a suggestion from
 			auto suggest list using the same method which added additional
 			functionality to the auto suggest list (as mentioned above).
 

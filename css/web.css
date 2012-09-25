@@ -140,7 +140,43 @@ footer{
 	height:100%;
 	opacity:0.5;
 	background:#000;
-	z-index:75;
+	z-index:200;
+}
+
+#dialogConfirm{
+	z-index:300;
+	border: solid 2px #F80043;
+	background:#FEC6D5;
+	-moz-box-shadow: 0px 0px 10px #000;
+	-webkit-box-shadow: 0px 0px 10px #000;
+	box-shadow: 0px 0px 10px #000;
+	padding:15px;
+	text-align:center;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.ui-dialog-titlebar{ /*jQuery UI created class*/
+	display:none;
+}
+
+.ui-button{ /*jQuery UI created class*/
+	width:75px;
+	height: 30px;
+	color: #333;
+	text-align:center;
+	background: #fff;
+	border: solid 1px #6FD1FB;
+	cursor:pointer;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.ui-dialog-buttonset{ /*jQuery UI created class*/
+	position:absolute;
+	top: 90px;
+	left: 50px;
+	width: 180;
 }
 
 ul.menu{
@@ -379,6 +415,12 @@ li .ui-menu-item{
 	padding-bottom:15px;
 }
 
+#scrollTopDisplay{
+	position:fixed;
+	color:#fff;
+	padding-left:15px;
+}
+
 .studentView{
 	padding-top:30px;
 }
@@ -424,8 +466,48 @@ li .ui-menu-item{
 	left:480px;
 }
 
+.floatingHeader {
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px;
+	height:40px;
+	line-height:40px;
+	font-size:20px;
+	background-color: #04A1E4;
+	color: #fff;
+	padding-left:17px;
+	left:0px;
+	width:583px;
+	position: fixed;
+	top: 84px;
+	left: auto;
+	visibility: hidden;
+	z-index:100;
+}
+
 input:focus, textarea:focus {
     outline: none !important;
+}
+
+input:disabled, textarea:disabled{
+	color:#999;
+	border-color:#999;
+}
+
+.editableBy{
+	z-index:50;
+	border: solid 2px #F80043;
+	background:#FEC6D5;
+	-moz-box-shadow: 0px 0px 10px #000;
+	-webkit-box-shadow: 0px 0px 10px #000;
+	box-shadow: 0px 0px 10px #000;
+	padding:15px;
+	text-align:center;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	position:absolute;
+	top:110px;
+	left:150px;
+	display:none;
 }
 
 .inputAssessComment{
@@ -474,7 +556,7 @@ input:focus, textarea:focus {
 	left:510px;
 }
 
-#saveAll{
+#saveAll, #expandAll, #collapseAll{
 	width:100px;
 	height:40px;
 	line-height:40px;
@@ -484,12 +566,23 @@ input:focus, textarea:focus {
 	background: #444;
 	position: fixed;
 	border: solid 2px #ffffff;
-	top:99px;
 	-moz-box-shadow: 0px 0px 10px #000;
 	-webkit-box-shadow: 0px 0px 10px #000;
 	box-shadow: 0px 0px 10px #000;
 	cursor:pointer;
 	display:none;
+}
+
+#saveAll{
+	top:99px;
+}
+
+#expandAll{
+	top:99px;
+}
+
+#collapseAll{
+	top:159px;
 }
 
 .save{
@@ -535,6 +628,7 @@ input:focus, textarea:focus {
 }
 
 .previousAssessTab{
+	border-radius: 2px;
 	-webkit-transition: all 0.5s ease;
 	-moz-transition: all 0.5s ease;
 	-ms-transition: all 0.5s ease;
@@ -624,6 +718,21 @@ input:focus, textarea:focus {
 	
 }
 
+.deleteButton{
+	background:#FFF;
+	color:#F80043;
+	border:#F80043 solid 1px;
+	height: 12px;
+	line-height: 12px;
+	font-size: 10px;
+	width:40px;
+	position:absolute;
+	top: 53px;
+	right: 10px;
+	text-align: center;
+	cursor:pointer;
+}
+
 .previousAssessTab:first-child{
 	margin-top:23px;
 }
@@ -658,6 +767,9 @@ input:focus, textarea:focus {
 	padding:15px;
 	text-align:center;
 	overflow:hidden;
+	-moz-border-radius: 0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px;
+	border-top:none;
 }
 
 #loadingTray{
@@ -683,4 +795,7 @@ input:focus, textarea:focus {
 	padding:15px;
 	text-align:center;
 	overflow:hidden;
+	-moz-border-radius: 0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px;
+	border-top:none;
 }

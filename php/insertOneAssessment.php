@@ -14,7 +14,7 @@ $t = $_GET[t];
 $l = mysql_real_escape_string($_GET[l]);
 $e = mysql_real_escape_string($_GET[e]);
 
-$result = mysql_query("UPDATE Assessment SET teacher='$t', teacherComment='$tc', ncLevel='$l', effort='$e', updated=NOW() WHERE Student_idStudent='$sid' AND subjectArea='$s' AND assessmentArea='$a'");         
+$result = mysql_query("UPDATE Assessment SET teacher='$t', teacherComment='$tc', ncLevel='$l', effort='$e', updated=NOW() WHERE Student_idStudent='$sid' AND subjectArea='$s' AND assessmentArea='$a' AND deleted IS NULL");         
 if (mysql_affected_rows()==0) {
     $result = mysql_query("INSERT INTO Assessment (Student_idStudent, assessmentArea, subjectArea, teacherComment, teacher, ncLevel, effort, created) VALUES ('$sid', '$a', '$s', '$tc', '$t', '$l', '$e', NOW())");
 }

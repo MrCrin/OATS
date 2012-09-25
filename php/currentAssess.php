@@ -8,7 +8,7 @@ $s = $_GET[s];
 $t = $_GET[t];
 
 
-$result = mysql_query("SELECT * FROM Assessment WHERE Student_idStudent='$sid' AND subjectArea='$s' AND assessmentArea='$a'");
+$result = mysql_query("SELECT * FROM Assessment WHERE Student_idStudent='$sid' AND deleted IS NULL AND subjectArea='$s' AND assessmentArea='$a'");
 $rows = array();
 while($r = mysql_fetch_assoc($result)) {
     $rows[] = $r;
