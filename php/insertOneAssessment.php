@@ -12,11 +12,12 @@ $s = $_GET[s];
 $tc = mysql_real_escape_string($_GET[tc]);
 $t = $_GET[t];
 $l = mysql_real_escape_string($_GET[l]);
+$li = mysql_real_escape_string($_GET[li]);
 $e = mysql_real_escape_string($_GET[e]);
 
-$result = mysql_query("UPDATE Assessment SET teacher='$t', teacherComment='$tc', ncLevel='$l', effort='$e', updated=NOW() WHERE Student_idStudent='$sid' AND subjectArea='$s' AND assessmentArea='$a' AND deleted IS NULL");         
+$result = mysql_query("UPDATE Assessment SET teacher='$t', teacherComment='$tc', ncLevel='$l', ncLevelImp='$li', effort='$e', updated=NOW() WHERE Student_idStudent='$sid' AND subjectArea='$s' AND assessmentArea='$a' AND deleted IS NULL");         
 if (mysql_affected_rows()==0) {
-    $result = mysql_query("INSERT INTO Assessment (Student_idStudent, assessmentArea, subjectArea, teacherComment, teacher, ncLevel, effort, created) VALUES ('$sid', '$a', '$s', '$tc', '$t', '$l', '$e', NOW())");
+    $result = mysql_query("INSERT INTO Assessment (Student_idStudent, assessmentArea, subjectArea, teacherComment, teacher, ncLevel,  ncLevelImp, effort, created) VALUES ('$sid', '$a', '$s', '$tc', '$t', '$l', '$li', '$e', NOW())");
 }
 
 echo $result;

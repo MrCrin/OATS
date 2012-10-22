@@ -520,7 +520,7 @@ input:disabled, textarea:disabled{
 	padding:10px;
 }
 
-.inputAssessLevel, .inputAssessEffort{
+.inputAssessLevel, .inputAssessLevelImproved, .inputAssessEffort{
 	width:25px;
 	position:absolute;
 	left:558px;
@@ -529,7 +529,7 @@ input:disabled, textarea:disabled{
 	border: solid 1px #04A1E4;
 }
 
-.inputAssessLevel:focus, .inputAssessEffort:focus, .inputAssessComment:focus {
+.inputAssessLevel:focus, .inputAssessLevelImproved:focus, .inputAssessEffort:focus, .inputAssessComment:focus {
 	-moz-box-shadow: 0px 0px 10px #04A1E4;
 	-webkit-box-shadow: 0px 0px 10px #04A1E4;
 	box-shadow: 0px 0px 10px #04A1E4;
@@ -543,6 +543,9 @@ input:disabled, textarea:disabled{
 	top:94px;
 }
 
+.inputAssessLevelImproved{
+	top:133px;
+}
 
 .inputAssessLevelLabel{
 	position:absolute;
@@ -554,6 +557,11 @@ input:disabled, textarea:disabled{
 	position:absolute;
 	top:95px;
 	left:510px;
+}
+.inputAssessLevelImprovedLabel{
+	position:absolute;
+	top:134px;
+	left:477px;
 }
 
 #saveAll, #expandAll, #collapseAll{
@@ -650,7 +658,7 @@ input:disabled, textarea:disabled{
 	height:205px;
 }
 
-.prevTeacher, .prevLvl, .prevEff, .prevArea{
+.prevTeacher, .prevLvlCur, .prevLvlOld, .prevEff, .prevArea{
 	height:26px;
 	line-height:26px;
 	width:50px;
@@ -664,13 +672,17 @@ input:disabled, textarea:disabled{
 	border-right: #fff solid 1px;
 }
 
-.prevLvl{
-	left:50px;
-	border-right: #fff solid 1px;
+.prevLvlCur{
+	left:100px;
+}
+
+.prevLvlOld{
+	left:135px;
+	color:#666;
 }
 
 .prevEff{
-	left:100px;
+	left:50px;
 	border-right: #fff solid 1px;
 }
 

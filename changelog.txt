@@ -2,6 +2,37 @@
 
 ##Developed by Michael Crinnion (crin@crin.co.uk)
 
+OATS (α 0.0.4) // New features and bug fixes
+
+	FEATURES
+		
+		Mark
+			- Added "XX" (and "xx") as an allowed mark in Effort and Level
+			fields for students who were not present for the assessment or
+			who's work is unassessable for other reasons.
+			- Added "Specification" as assessment area.
+			- Added "New Level" box to assessment cards and associated database
+			column for recording new levels after the student has acted on
+			feedback.
+			
+		View
+			- Added "New Level" data to tabs (keeping old data in parentheses)
+			- Changed display order of "effort" and "level" on tabs to enable
+			easier display of new updated level data.
+		
+		Print
+			- Template adjusted to match paper folders.
+			- Removed warning about print not working correctly.
+			- Added Unix timestamp to request URL in an attempt to prevent caching
+			with a view to fixing Issue #5 (Old data appearing on PDF's after
+			being updated in the database.)
+			
+	BUG FIXES
+		
+		Print
+			- (Issue fix #4)DOMPDF_ENABLE_CSS_FLOAT set to true and some kludging
+			using clear divs to get templates working correctly.
+
 OATS (α 0.0.3) // New features, some UI polish
 
 	FEATURES

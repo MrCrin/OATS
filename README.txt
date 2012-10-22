@@ -37,6 +37,7 @@ excellent opensource html to pdf convertor. It can be downloaded from
 http://eclecticgeek.com/dompdf
 The entire contents of the download should be added to the root directory
 in which you are running OATS.
+DOMPDF_ENABLE_CSS_FLOAT must be set to true for CSS templates to work.
 
 ## License
 

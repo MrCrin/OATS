@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>OATS (α 0.0.3)</title>
+  <title>OATS (α 0.0.4)</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" href="css/style.css">
@@ -17,6 +17,7 @@
 	<script src="js/libs/jquery-ui-1.8.22.min.js"></script>
 	<script src="js/libs/jquery.validate.min.js"></script>
 	<script src="js/libs/jquery.dateFormat-1.0.min.js"></script>
+	<script src="spellcheck/include.js"></script>
 	<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 	<script src="js/plugins.js"></script>
 	<script src="js/script.js"></script>
@@ -25,7 +26,7 @@
 <body>
 <div id="loadingLightshade"></div>
 <div id="topnav">
-	<header>Online Assessment and Tracking System <div id="build">(α 0.0.3)</div></header>
+	<header>Online Assessment and Tracking System <div id="build">(α 0.0.4)</div></header>
 	<div id="user"></div>
 	<ul class="menu">
 		<li>
@@ -69,6 +70,7 @@
 			<li title="OJe">Oli Jefferson</li>
 			<li title="SLa">Sophie Lancaster</li>
 			<li title="AMi">Annie Mitchell</li>
+			<li title="LPe">Laura Pearce</li>
 			<li title="ASt">Alex Stubbs</li>
 		</ul>
 	</div>

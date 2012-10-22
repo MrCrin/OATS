@@ -13,6 +13,8 @@ $html .= "<html><head><link rel='stylesheet' href='../css/print.css'><link href=
 
 $result = mysql_query("SELECT * FROM Assessment, Student WHERE techClass='$c' AND subjectArea='$s' AND assessmentArea='$a' AND idStudent=Student_idStudent");
 
+$html .= '<div class="printWrapper">';
+
 while($r = mysql_fetch_assoc($result)) {
 	$html .=
 	'<div class="printContainer">'.
@@ -20,15 +22,17 @@ while($r = mysql_fetch_assoc($result)) {
 		'<div class="printSubject">'.$r[subjectArea].'</div>'.
 		'<div class="printArea">'.$r[assessmentArea].'</div>'.
 		'<div class="printTeacher">'.$r[teacher].'</div>'.
-		'<div class="printLevelLabel">Level</div>'.
+		'<div class="printLevelLabel">Level:</div>'.
 		'<div class="printLevel">'.$r[ncLevel].'</div>'.
-		'<div class="printEffortLabel">Effort</div>'.
+		'<div class="printEffortLabel">Effort:</div>'.
 		'<div class="printEffort">'.$r[effort].'</div>'.
 		'<div class="printComment">'.$r[teacherComment].'</div>'.
-	'</div>';
+	'</div>'.
+	'<div class="clear"></div>';
+	
 }
 
-$html .= '</html></body>';
+$html .= '</div></html></body>';
 
 /*print $html;
 */

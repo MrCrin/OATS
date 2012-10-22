@@ -36,6 +36,8 @@ floatingHeaderArray =  new Array;
 //Everything below here waits for the document to be ready
 $(document).ready(function() {
 	
+	//Unix timestamp in seconds for appending URL's in order to prevent caching.
+	timestamp = Math.round(+new Date()/1000);	
 
     //Header click 'home' effect by reloading page body asynchronously - Unsuprisingly not working properly in IE
     $("header").click(function() {
@@ -55,6 +57,11 @@ $(document).ready(function() {
             }
         });
     });
+	
+	//Enable Spell Checker
+	enableSpellCheck = function() {
+      $('.inputAssessComment').spellAsYouType();
+	};	
 	
 	//Delete assessment function
 	deleteAssessment = function(delAssID,event){
@@ -111,19 +118,34 @@ $(document).ready(function() {
 					} else {
 						deleteButton = '';
 					}
-					$(prevAssListSelector).append(
-					'<li class="previousAssessTab collapsed" id="prevTab' + val.idAssessment + '">' + 
-					deleteButton + 
-					'<div class="prevTeacher">' + val.teacher + ' </div>' + 
-					'<div class="prevLvl">' + val.ncLevel + '</div>' + 
-					'<div class="prevEff">' + val.effort + '</div>' + 
-					'<div class="prevArea" onClick="toggleTab(this)">' + val.assessmentArea + '</div>' + 
-					'<div class="prevCreated">First Created: ' + $.format.date(val.created, "ddd dd MMM yyyy @ hh:mm a") + ' </div>' + 
-					'<div class="prevUpdated">Last Updated: ' + prevUpdateString + ' </div>' + 
-					'<div class="prevSubject">' + val.subjectArea + '</div>' + 
-					'<div class="prevComment">' + val.teacherComment + '</div>' + 
-					'</li>'
-					)
+					if(val.ncLevelImp){
+						$(prevAssListSelector).append(
+						'<li class="previousAssessTab collapsed" id="prevTab' + val.idAssessment + '">' + 
+						deleteButton + 
+						'<div class="prevTeacher">' + val.teacher + ' </div>' + 
+						'<div class="prevLvlCur">' + val.ncLevelImp + '</div>' + 
+						'<div class="prevLvlOld">(' + val.ncLevel + ')</div>' + 
+						'<div class="prevEff">' + val.effort + '</div>' + 
+						'<div class="prevArea" onClick="toggleTab(this)">' + val.assessmentArea + '</div>' + 
+						'<div class="prevCreated">First Created: ' + $.format.date(val.created, "ddd dd MMM yyyy @ hh:mm a") + ' </div>' + 
+						'<div class="prevUpdated">Last Updated: ' + prevUpdateString + ' </div>' + 
+						'<div class="prevSubject">' + val.subjectArea + '</div>' + 
+						'<div class="prevComment">' + val.teacherComment + '</div>' + 
+						'</li>')
+					} else {
+						$(prevAssListSelector).append(
+						'<li class="previousAssessTab collapsed" id="prevTab' + val.idAssessment + '">' + 
+						deleteButton + 
+						'<div class="prevTeacher">' + val.teacher + ' </div>' + 
+						'<div class="prevLvlCur">' + val.ncLevel + '</div>' + 
+						'<div class="prevEff">' + val.effort + '</div>' + 
+						'<div class="prevArea" onClick="toggleTab(this)">' + val.assessmentArea + '</div>' + 
+						'<div class="prevCreated">First Created: ' + $.format.date(val.created, "ddd dd MMM yyyy @ hh:mm a") + ' </div>' + 
+						'<div class="prevUpdated">Last Updated: ' + prevUpdateString + ' </div>' + 
+						'<div class="prevSubject">' + val.subjectArea + '</div>' + 
+						'<div class="prevComment">' + val.teacherComment + '</div>' + 
+						'</li>')
+					}
 					tabSelector = "#prevTab" + val.idAssessment
 					$(tabSelector).slideDown(300);
 				});
@@ -242,6 +264,7 @@ $(document).ready(function() {
         //Create array object's for collecting inputted information;
         assessCmtArray = new Array();
         assessLvlArray = new Array();
+        assessLvlImpArray = new Array();
         assessEffArray = new Array();
         //This clears the #main of all html
         $('#mainContent').html("");
@@ -276,7 +299,7 @@ $(document).ready(function() {
                         $("#subjectSelect").remove()
                     });
                     $("#subject").fadeIn(100);
-                    $('#main').append('<div class="multiChoice" id="areaSelect">' + '<div class="boxTop">Area</div>' + '<ul>' + '<li title="Research">Research</li>' + '<li title="Ideas">Ideas</li>' + '<li title="Development">Development</li>' + '<li title="Planning">Planning</li>' + '<li title="Making">Making</li>' + '<li title="Evaluation">Evaluation</li>' + '</ul>' + '</div>');
+                    $('#main').append('<div class="multiChoice" id="areaSelect">' + '<div class="boxTop">Area</div>' + '<ul>' + '<li title="Research">Research</li>' +'<li title="Specification">Specification</li>' + '<li title="Ideas">Ideas</li>' + '<li title="Development">Development</li>' + '<li title="Planning">Planning</li>' + '<li title="Making">Making</li>' + '<li title="Evaluation">Evaluation</li>' + '</ul>' + '</div>');
                     $("#areaSelect").delay(100).fadeIn(100);
                     $("#areaSelect li").hover(
                     
@@ -314,7 +337,9 @@ $(document).ready(function() {
                                 '<input disabled="" type="text" maxlength="2" id="inputAssessLevel' + val.idStudent + '" name="levelField" class="inputAssessLevel"></input>' + 
                                 '<label class="inputAssessEffortLabel">Effort:</label>' + 
                                 '<input disabled="" type="text" maxlength="2" id="inputAssessEffort' + val.idStudent + '" name="effortField" class="inputAssessEffort"></input>' + 
-                                '</form>' + 
+                                '<label class="inputAssessLevelImprovedLabel">New Level:</label>' + 
+                                '<input disabled="" type="text" maxlength="2" id="inputAssessLevelImproved' + val.idStudent + '" name="levelImpField" class="inputAssessLevelImproved"></input>' + 
+								'</form>' + 
                                 '<div id="save' + val.idStudent + '" class="save">Save</div>' + 
                                 '<div id="editableBy' + val.idStudent + '" class="editableBy"></div>' + 
                                 '<div id="saveInProg' + val.idStudent + '" class="saveInProg"></div>' + 
@@ -326,6 +351,7 @@ $(document).ready(function() {
                                 var thisTextBox = "#inputAssessComment" + val.idStudent, 
                                 thisLevelBox = "#inputAssessLevel" + val.idStudent, 
                                 thisEffortBox = "#inputAssessEffort" + val.idStudent,
+                                thisLevelImpBox = "#inputAssessLevelImproved" + val.idStudent, 
 								thisEditableBy = "#editableBy" + val.idStudent;
                                 //Get previous assessment data for this card and load the data into the relevant fields
                                 $.getJSON('php/currentAssess.php?sid=' + val.idStudent + '&a=' + areaCode + '&s=' + subjectCode + '&t=' + userCode, function(data) {
@@ -338,6 +364,9 @@ $(document).ready(function() {
 											$(thisTextBox).fadeOut(200,function(){$(thisTextBox).val(data[data.length-1].teacherComment).removeAttr("disabled").fadeIn(200);});
 											$(thisLevelBox).fadeOut(200,function(){$(thisLevelBox).val(data[data.length-1].ncLevel).removeAttr("disabled").fadeIn(200);});
 											$(thisEffortBox).fadeOut(200,function(){$(thisEffortBox).val(data[data.length-1].effort).removeAttr("disabled").fadeIn(200);});
+											if(data){
+												$(thisLevelImpBox).fadeOut(200,function(){$(thisLevelImpBox).val(data[data.length-1].ncLevelImp).removeAttr("disabled").fadeIn(200);});
+											}
 										} else {
 											$(thisTextBox).fadeOut(200,function(){$(thisTextBox).val(data[data.length-1].teacherComment).attr("disabled", "disabled").fadeIn(200);});
 											$(thisLevelBox).fadeOut(200,function(){$(thisLevelBox).val(data[data.length-1].ncLevel).attr("disabled", "disabled").fadeIn(200);});
@@ -350,13 +379,15 @@ $(document).ready(function() {
                                 //Get previous assessments for this student and build tabs
 								buildTabs('php/previousAssess.php?sid=' + val.idStudent + '&s=' + subjectCode + '&a=' + areaCode, val.idStudent);
                             });
-							$('.inputAssessComment, .inputAssessLevel, .inputAssessEffort').bind("keydown focus keyup change", function(event) {
+							$('.inputAssessComment, .inputAssessLevel, .inputAssessLevelImproved, .inputAssessEffort').bind("keydown focus keyup change", function(event) {
                                 currentStudentID = $(event.target).closest("div").attr("id");
                                 saveSelector = "#save" + currentStudentID;
                                 assessCmtSelecter = "#inputAssessComment" + currentStudentID;
                                 assessCmtArray[currentStudentID] = $(assessCmtSelecter).val();
                                 assessLvlSelecter = "#inputAssessLevel" + currentStudentID;
                                 assessLvlArray[currentStudentID] = $(assessLvlSelecter).val().toUpperCase();
+                                assessLvlImpSelecter = "#inputAssessLevelImproved" + currentStudentID;
+                                assessLvlImpArray[currentStudentID] = $(assessLvlImpSelecter).val().toUpperCase();
                                 assessEffSelecter = "#inputAssessEffort" + currentStudentID;
                                 assessEffArray[currentStudentID] = $(assessEffSelecter).val().toUpperCase();
                                 $(saveSelector).fadeIn(100);
@@ -388,13 +419,18 @@ $(document).ready(function() {
                                     rules: {
                                         //Use regex to only allow valid National Curriculum Levels from 1C to 8A
                                         levelField: {
-                                            regex: "[1-8][a-cA-C]",
+                                            regex: "[1-8][a-cA-C]|\\bxx\\b|\\bXX\\b",
                                             required: true,
+                                            minlength: 2
+                                        },
+                                        levelImpField: {
+                                            regex: "[1-8][a-cA-C]|\\bxx\\b|\\bXX\\b",
+                                            required: false,
                                             minlength: 2
                                         },
                                         //Use regex to only allow valid effort grades in the range UN, IM, GD, EX
                                         effortField: {
-                                            regex: "\\bun\\b|\\bUN\\b|\\bim\\b|\\bIM\\b|\\bgd\\b|\\bGD\\b|\\bex\\b|\\bEX\\b",
+                                            regex: "\\bun\\b|\\bUN\\b|\\bim\\b|\\bIM\\b|\\bgd\\b|\\bGD\\b|\\bex\\b|\\bEX\\b|\\bxx\\b|\\bXX\\b",
                                             required: true,
                                             minlength: 2
                                         },
@@ -406,6 +442,11 @@ $(document).ready(function() {
                                     },
                                     messages: {
                                         levelField: {
+                                            regex: 'Please enter a valid level for this student',
+                                            required: 'Please enter a level for this student',
+                                            minlength: 'Please enter a valid level for this student'
+                                        },
+                                        levelImpField: {
                                             regex: 'Please enter a valid level for this student',
                                             required: 'Please enter a level for this student',
                                             minlength: 'Please enter a valid level for this student'
@@ -429,7 +470,7 @@ $(document).ready(function() {
                                     var saveInProgSelector = "#saveInProg" + currentStudentID;
                                     $(saveInProgSelector).fadeIn(50);
                                     loadMessage = "Saving data...";
-                                    $.post('php/insertOneAssessment.php?sid=' + currentStudentID + '&a=' + areaCode + '&s=' + subjectCode + '&tc=' + assessCmtArray[currentStudentID] + '&t=' + userCode + '&l=' + assessLvlArray[currentStudentID] + '&e=' + assessEffArray[currentStudentID], function(result) {
+                                    $.post('php/insertOneAssessment.php?sid=' + currentStudentID + '&a=' + areaCode + '&s=' + subjectCode + '&tc=' + assessCmtArray[currentStudentID] + '&t=' + userCode + '&l=' + assessLvlArray[currentStudentID]  + '&li=' + assessLvlImpArray[currentStudentID] + '&e=' + assessEffArray[currentStudentID], function(result) {
                                         if (result == 1) {
                                             $(saveInProgSelector).delay(200).fadeOut(500);
                                             unsaved = $(".save:visible").length;
@@ -455,6 +496,7 @@ $(document).ready(function() {
                         });
                     });
                 });
+				//enableSpellCheck();
                 break;
             case "view":
                 $("#mainContent").fadeIn(0);
@@ -491,53 +533,49 @@ $(document).ready(function() {
 				$('#collapseAll').delay(300).fadeIn(300);
                 break;
             case "print":
-                var r = confirm("The print function is not really working yet, it'll produce a PDF but it's not formatted correctly, do you want to give it a go anyways?");
-                if (r == true) {
-                    $('#main').append('<div class="multiChoice" id="subjectSelect">' + '<div class="boxTop">Subject</div>' + '<ul>' + '<li title="RM Project 1">RM Project 1</li>' + '<li title="RM Project 2">RM Project 2</li>' + '<li title="Textiles">Textiles</li>' + '<li title="Food Tech">Food Tech</li>' + '<li title="Cad Cam">Cad Cam</li>' + '</ul>' + '</div>');
-                    $('#subjectSelect').fadeIn(300);
-                    $("#subjectSelect li").hover(
-                    
-                    function() {
-                        subjectCode = $(this).attr("title");
-                        $('#subject').html('> ' + $(this).text());
-                        $(this).attr("title", "");
-                    }, 
-                    
-                    function() {
-                        $(this).attr("title", subjectCode);
-                    });
-                    $("#subjectSelect li").click(function() {
-                        $("#subjectSelect").fadeOut(100, function() {
-                            $("#subjectSelect").remove()
-                        });
-                        $("#subject").fadeIn(100);
-                        $('#main').append('<div class="multiChoice" id="areaSelect">' + '<div class="boxTop">Area</div>' + '<ul>' + '<li title="Research">Research</li>' + '<li title="Ideas">Ideas</li>' + '<li title="Development">Development</li>' + '<li title="Planning">Planning</li>' + '<li title="Making">Making</li>' + '<li title="Evaluation">Evaluation</li>' + '</ul>' + '</div>');
-                        $("#areaSelect").delay(100).fadeIn(100);
-                        $("#areaSelect li").hover(
-                        
-                        function() {
-                            areaCode = $(this).attr("title");
-                            $('#area').html('> ' + $(this).text());
-                            $(this).attr("title", "");
-                        }, 
-                        
-                        function() {
-                            $(this).attr("title", areaCode);
-                        });
-                        $("#areaSelect li").click(function() {
-                            $("#areaSelect").fadeOut(50, function() {
-                                $("#areaSelect").remove()
-                            });
-                            $('#action').html('You are ' + actionIntent + 'ing ' + event.target.id);
-                            $('#action').fadeIn(300);
-                            $("#area").fadeIn(100);
-                            $("#mainContent").fadeIn(0);
-                            $('#mainTitle').fadeIn(300);
-                            window.open('php/printClass.php?c=' + event.target.id + '&s=' + subjectCode + '&a=' + areaCode);
-                        });
-                    });
-                } else {
-                }
+				$('#main').append('<div class="multiChoice" id="subjectSelect">' + '<div class="boxTop">Subject</div>' + '<ul>' + '<li title="RM Project 1">RM Project 1</li>' + '<li title="RM Project 2">RM Project 2</li>' + '<li title="Textiles">Textiles</li>' + '<li title="Food Tech">Food Tech</li>' + '<li title="Cad Cam">Cad Cam</li>' + '</ul>' + '</div>');
+				$('#subjectSelect').fadeIn(300);
+				$("#subjectSelect li").hover(
+				
+				function() {
+					subjectCode = $(this).attr("title");
+					$('#subject').html('> ' + $(this).text());
+					$(this).attr("title", "");
+				}, 
+				
+				function() {
+					$(this).attr("title", subjectCode);
+				});
+				$("#subjectSelect li").click(function() {
+					$("#subjectSelect").fadeOut(100, function() {
+						$("#subjectSelect").remove()
+					});
+					$("#subject").fadeIn(100);
+					$('#main').append('<div class="multiChoice" id="areaSelect">' + '<div class="boxTop">Area</div>' + '<ul>' + '<li title="Research">Research</li>' + '<li title="Ideas">Ideas</li>' + '<li title="Development">Development</li>' + '<li title="Planning">Planning</li>' + '<li title="Making">Making</li>' + '<li title="Evaluation">Evaluation</li>' + '</ul>' + '</div>');
+					$("#areaSelect").delay(100).fadeIn(100);
+					$("#areaSelect li").hover(
+					
+					function() {
+						areaCode = $(this).attr("title");
+						$('#area').html('> ' + $(this).text());
+						$(this).attr("title", "");
+					}, 
+					
+					function() {
+						$(this).attr("title", areaCode);
+					});
+					$("#areaSelect li").click(function() {
+						$("#areaSelect").fadeOut(50, function() {
+							$("#areaSelect").remove()
+						});
+						$('#action').html('You are ' + actionIntent + 'ing ' + event.target.id);
+						$('#action').fadeIn(300);
+						$("#area").fadeIn(100);
+						$("#mainContent").fadeIn(0);
+						$('#mainTitle').fadeIn(300);
+						window.open('php/printClass.php?c=' + event.target.id + '&s=' + subjectCode + '&a=' + areaCode + '&'  + timestamp);
+					});
+				});
                 break;
         }
     
