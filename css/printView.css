@@ -1,0 +1,89 @@
+@charset "utf-8";
+/* Style Sheet for OATS Print View */
+
+@media print  
+{
+    div{
+        page-break-inside: avoid;
+    }
+}
+
+.deleteButton, .prevCreated, .prevUpdated, .prevComment{
+	display:none;
+}
+
+.studentContainer{
+	border:solid 2px;
+	border-color:#000;
+	border-radius:15px;
+	padding: 10px;
+	padding-top:45px;
+	margin-bottom:15px;
+	display:block;
+	position:relative;
+}
+
+.previousAssessments{
+	margin:0px;
+	padding:0px;
+}
+
+.previousAssessTab{
+	list-style:none;
+	height:25px;
+	line-height:25px;
+	display:block;
+	margin-left:5px;
+	margin-right:5px;
+	position:relative;
+}
+
+li{
+	border-bottom:dotted 1px;
+}
+
+.prevTeacher, .prevLvlCur, .prevEff, .prevArea, .prevSubject{
+	float:left;
+	margin-right:15px;
+	position:absolute;
+	top:0px;
+}
+
+.prevTeacher{
+	right:-10px;
+}
+
+.prevLvlCur{
+	left:0px;
+}
+
+.prevEff{
+	left:50px;
+}
+
+.prevSubject{
+	left:200px;
+}
+
+.prevArea{
+	left:300px;
+}
+
+.studentName{
+	font-size:18px;
+	position:absolute;
+	left:15px;
+	top:15px;
+}
+
+.studentAvg{
+	position:absolute;
+	right:15px;
+	top:15px;
+}
+
+.studentTarget{
+	position:absolute;
+	right:100px;
+	top:15px;
+}

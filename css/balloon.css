@@ -1,0 +1,9 @@
+.balloon-inflated {
+	position: fixed;
+	top: 0px;
+}
+
+.balloon-floating {
+	position: relative;
+	z-index: 1;
+}

@@ -6,11 +6,12 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>OATS (α 0.0.4)</title>
+  <title>OATS (α 0.0.5)</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/web.css">
+	<link rel="stylesheet" type="text/css" href="fancyBox/jquery.fancybox.css">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<script src="js/libs/modernizr-2.5.3.min.js"></script>
 	<script src="js/libs/jquery-1.7.1.min.js"></script>
@@ -18,6 +19,7 @@
 	<script src="js/libs/jquery.validate.min.js"></script>
 	<script src="js/libs/jquery.dateFormat-1.0.min.js"></script>
 	<script src="spellcheck/include.js"></script>
+	<script src="fancyBox/jquery.fancybox.js"></script>
 	<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 	<script src="js/plugins.js"></script>
 	<script src="js/script.js"></script>
@@ -26,7 +28,7 @@
 <body>
 <div id="loadingLightshade"></div>
 <div id="topnav">
-	<header>Online Assessment and Tracking System <div id="build">(α 0.0.4)</div></header>
+	<header>Online Assessment and Tracking System <div id="build">(α 0.0.5)</div></header>
 	<div id="user"></div>
 	<ul class="menu">
 		<li>
@@ -64,6 +66,7 @@
 	<div class="multiChoice" id="userSelect">
 		<div class="boxTop">Login</div>
 		<ul>
+			<li title="HBl">Heidi Bland</li>
 			<li title="MCr">Michael Crinnion</li>
 			<li title="SDe">Sue Dean</li>
 			<li title="VJa">Veryan James</li>
@@ -77,7 +80,7 @@
 </div>
 <div id="errorTray"></div>
 <div id="loadingTray"></div>
-<footer>© Michael Crinnion 2012 || <a href="changelog.txt">ChangeLog</a></footer>
+<footer>© Michael Crinnion 2012 || <a href="changelog.txt" data-fancybox-type="iframe" class="changelog">ChangeLog</a></footer>
   
 </body>
 </html>

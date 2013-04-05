@@ -2,6 +2,25 @@
 
 ##Developed by Michael Crinnion (crin@crin.co.uk)
 
+OATS (α 0.0.5) // More new features
+
+	FEATURES
+		
+		View
+			- Added automatically calculated "Average Level" to cards in
+			view mode. Can be set to look back over different numbers of past
+			levels. Currently set to last 4 levels.
+			- Added ability to print a clean formatted view of all grades for
+			the current class, without AFL comments. 
+			
+	GENERAL	
+		- Tidyed up changelog formatting.
+		- Added fancyBox plugin with a view to using it for graph display.
+		- Added "Cache-Control: no-cache" php header in another attempt to stop
+		data being cached and fix Issue #5 (Old data appearing on PDF's after
+		being updated in the database.)
+		- Updated the FilterProvider commands within .htaccess.
+
 OATS (α 0.0.4) // New features and bug fixes
 
 	FEATURES
@@ -62,8 +81,6 @@ OATS (α 0.0.3) // New features, some UI polish
 		- Redefined expandTab() as toggleTab() and added 'collapsed' class to tabs
 		as a default
 
-**********************************************************************************
-
 OATS (α 0.0.2) // New features, bug fixes and some cleanup 02 August 2012
 
 	FEATURES
@@ -98,8 +115,6 @@ OATS (α 0.0.2) // New features, bug fixes and some cleanup 02 August 2012
 			
 		Print
 			- (#4 0.0.1) Formatting issues related to dompdf plugin.
-
-**********************************************************************************
 
 OATS (α 0.0.1) // Initial alpha build 01 August 2012
 

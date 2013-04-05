@@ -2,9 +2,13 @@
 require("config.php");
 require("connect.php");
 
-$sid = $_GET[sid];
+$result = mysql_query("
+	SELECT teacher, COUNT(teacher) as teacherCount 
+	FROM Assessment
+	GROUP BY teacher
+	ORDER BY COUNT(teacher) DESC
+");
 
-$result = mysql_query("SELECT * FROM Assessment WHERE Student_idStudent='$sid' AND deleted IS NULL");
 $rows = array();
 while($r = mysql_fetch_assoc($result)) {
     $rows[] = $r;

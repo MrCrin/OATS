@@ -466,6 +466,18 @@ li .ui-menu-item{
 	left:480px;
 }
 
+.studentAvg{
+	height:32px;
+	line-height:32px;
+	font-size:20px;
+	background-color: #04A1E4;
+	color: #fff;
+	padding-left:10px;
+	position:absolute;
+	top:4px;
+	left:390px;
+}
+
 .floatingHeader {
 	-moz-border-radius: 5px 5px 0px 0px;
 	border-radius: 5px 5px 0px 0px;
@@ -564,7 +576,7 @@ input:disabled, textarea:disabled{
 	left:477px;
 }
 
-#saveAll, #expandAll, #collapseAll{
+#saveAll, #expandAll, #collapseAll, #printAll{
 	width:100px;
 	height:40px;
 	line-height:40px;
@@ -591,6 +603,10 @@ input:disabled, textarea:disabled{
 
 #collapseAll{
 	top:159px;
+}
+
+#printAll{
+	top:219px;
 }
 
 .save{

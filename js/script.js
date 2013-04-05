@@ -16,6 +16,7 @@ dynamicPositioning = function() {
     $('#saveAll').css("right", (multiActionButtonsRightPos + 'px'));
     $('#expandAll').css("right", (multiActionButtonsRightPos + 'px'));
     $('#collapseAll').css("right", (multiActionButtonsRightPos + 'px'));
+    $('#printAll').css("right", (multiActionButtonsRightPos + 'px'));
     var errorTrayRightPos = (($(window).width() / 2) - 100);
     $('#errorTray').css("right", (errorTrayRightPos + 'px'));
     var loadingTrayRightPos = (($(window).width() / 2) - 100);
@@ -35,6 +36,19 @@ floatingHeaderArray =  new Array;
 
 //Everything below here waits for the document to be ready
 $(document).ready(function() {
+	
+	//Fancy Box
+	$(".changelog").fancybox({
+		maxWidth	: 800,
+		maxHeight	: 600,
+		fitToView	: false,
+		width		: '70%',
+		height		: '70%',
+		autoSize	: false,
+		closeClick	: false,
+		openEffect	: 'fade',
+		closeEffect	: 'fade'
+	});
 	
 	//Unix timestamp in seconds for appending URL's in order to prevent caching.
 	timestamp = Math.round(+new Date()/1000);	
@@ -94,6 +108,57 @@ $(document).ready(function() {
 			]
 			});
 	}
+	
+	//Function to create marking Teacher Stats Tab
+	createTeacherStatsTab = function(){
+		$('#mainContent').append('<div id="teacherStatsTab></div>"');
+		$.getJSON("php/countMarkingPerTeacher.php", function(data) {
+			$.each(data, function(key, val) {
+				$('#teacherStatsTab').append(val.teacher + ' : ' + val.teacherCount);
+			});
+		});
+	}
+	
+	createTeacherStatsTab();
+	
+	//Kludge code to allow averaging functions to work in IE8 and below (probably temporary)
+	if (!Array.prototype.indexOf) { 
+		Array.prototype.indexOf = function(obj, start) {
+			 for (var i = (start || 0), j = this.length; i < j; i++) {
+				 if (this[i] === obj) { return i; }
+			 }
+			 return -1;
+		}
+	}
+	
+	//Functions for mapping NC Levels to Numbers and visa versa for averaging and stuff
+	valueMatrix = new Array("1C","1B","1A","2C","2B","2A","3C","3B","3A","4C","4B","4A","5C","5B","5A","6C","6B","6A","7C","7B","7A","8C","8B","8A");
+	levelToNumber = function(level){
+		return (valueMatrix.indexOf(level))+1;
+	}
+	numberToLevel = function(number){
+		return valueMatrix[number-1];
+	}
+	
+	//Calculates an average level for a given student from a given number of past assessments and appends the div "avg(id)" which must exist in the DOM already.
+	averageLevel = function(id, n){//id = id of student, n = number of past assessments to use
+		var avgLevel = 0;
+		var noLevels = 0;
+		var url = 'php/previousLevels.php?sid=' + id + '&n=' + n;
+		$.getJSON(url, function(data) {
+			$.each(data, function(key, val) {
+				if(val.ncLevel!="XX"){
+					//Find average level
+					avgLevel = avgLevel + levelToNumber(val.ncLevel);
+					noLevels = noLevels + 1;
+				}
+			});
+			avgLevel = Math.round(avgLevel/noLevels);
+			avgLevel = numberToLevel(avgLevel);
+			var div = '#avg' + id;
+			$(div).append(avgLevel);
+		});
+	};
 		
 	//Tab building function 
 	buildTabs = function(url, id){
@@ -236,15 +301,6 @@ $(document).ready(function() {
 		$("#searchBoxOATS").val("");
     });
 	
-	//Functions for mapping NC Levels to Numbers and vias versa for averaging and stuff
-	valueMatrix = new Array("1C","1B","1A","2C","2B","2A","3C","3B","3A","4C","4B","4A","5C","5B","5A","6C","6B","6A","7C","7B","7A","8C","8B","8A");
-	levelToNumber = function(level){
-		return (valueMatrix.indexOf(level))+1;
-	}
-	numberToLevel = function(number){
-		return valueMatrix[number-1];
-	}
-	
 	//Expand all / Collapse all tabs functions
 	collapseAll = function(){
 		$(".expanded").children(".prevArea").click().trigger(scroll);
@@ -252,9 +308,21 @@ $(document).ready(function() {
 	expandAll = function(){
 		$(".collapsed").children(".prevArea").click().trigger(scroll);
 	}
+	//Print all function
+	printAll = function(){
+		var currentURL = $(location).attr('href');
+		var w = window.open();
+		var pf = $("#printFriendly").html();
+		var ts = new Date().getTime()
+		//$(w.document.head).html('<link rel="stylesheet" href="' + currentURL + 'css/printView.css">'); 
+		$(w.document.head).html('<link rel="stylesheet" href="' + currentURL + 'css/printView.css?' + ts + '">'); //Testing version
+		$(w.document.body).html(pf);//printFriendly is a global variable that is updated from inside the each loop in the view section
+		w.print();
+	}
 	
     //This is the main man, this function waits for clicks in the menu and then calls and displays the appropriate data in the #main div	
     $(".menuContent").click(function(event) {
+		
         //Set the action type from the menu that was used
         actionIntent = $(event.target).parent(".menuContent").attr("id")
         $("#mainTitle").fadeOut(200);
@@ -273,6 +341,8 @@ $(document).ready(function() {
         $('#action').fadeOut(0);
         $('#subject').fadeOut(0);
         $('#area').fadeOut(0);
+		//Create a hidden div to hold print friendly version of content for view mode.
+		$('#mainContent').append('<div id="printFriendly"></div>');
         //Switch statement to determine which menu was used and generate the appropriate HTML
         switch (actionIntent) {
             case "mark":
@@ -500,8 +570,14 @@ $(document).ready(function() {
                 break;
             case "view":
                 $("#mainContent").fadeIn(0);
+                $("#printFriendly").html("");				
+				//var balloonInst = new Balloon({
+				//	stackHeaders: false,
+				//	scrollView: document.getElementById('main')
+				//});
                 //This fetches a JSON object via a PHP script which queries the database and returns a JSON encoded object, the PHP script is passed a class variable which is set by the menu option which was clicked
-                loadMessage = "Loading data for " + event.target.id;
+                currentClassView = event.target.id;
+				loadMessage = "Loading data for " + event.target.id;
                 $.getJSON('php/oneFullClass.php?techClass=' + event.target.id, function(data) {
                     $('#mainTitle').fadeOut(0);
                     $('#action').html('You are ' + actionIntent + 'ing ' + event.target.id);
@@ -512,15 +588,18 @@ $(document).ready(function() {
                     dynamicPositioning();
                     $.each(data, function(key, val) {
 						var thisPosition = positionArray[0]
-                        $('#mainContent').append(
+                        $('#mainContent, #printFriendly').append(
                         '<div class="studentContainer studentView" id="' + val.idStudent + '">' +
-                        '<div class="studentName">' + val.name + ' ' + val.surname + ' - (' + val.form.substr(0, 1) + '/' + val.form.substr(1, 2) + ')</div>' + 
+                        '<div class="studentName" id="floatingHeader' + val.idStudent + '" >' + val.name + ' ' + val.surname + ' - (' + val.form.substr(0, 1) + '/' + val.form.substr(1, 2) + ')</div>' + 
+                        '<div class="studentAvg" id="avg' + val.idStudent + '"> Avg: </div>' +  
                         '<div class="studentTarget"> Target: <strong>' + val.target + '</strong></div>' +  
                         '</div>');
+						averageLevel(val.idStudent,4);
                         $(".studentContainer").hide().each(function(i) {
 							//$(this).slideDown(0);
                             $(this).delay(i * 50).slideDown(300).fadeIn(500);
                         })
+						//balloonInst.inflate('floatingHeader1');
                         //Get previous assessments for this student and build tabs
 						buildTabs('php/allPreviousAssess.php?sid=' + val.idStudent, val.idStudent);
                     });
@@ -528,9 +607,11 @@ $(document).ready(function() {
 				
                 $('#mainContent').append('<div id="expandAll" onClick="expandAll()">Expand</div>');
                 $('#mainContent').append('<div id="collapseAll" onClick="collapseAll()">Collapse</div>');
+                $('#mainContent').append('<div id="printAll" onClick="printAll()">Print</div>');
 				dynamicPositioning();
 				$('#expandAll').delay(300).fadeIn(300);
 				$('#collapseAll').delay(300).fadeIn(300);
+				$('#printAll').delay(300).fadeIn(300);
                 break;
             case "print":
 				$('#main').append('<div class="multiChoice" id="subjectSelect">' + '<div class="boxTop">Subject</div>' + '<ul>' + '<li title="RM Project 1">RM Project 1</li>' + '<li title="RM Project 2">RM Project 2</li>' + '<li title="Textiles">Textiles</li>' + '<li title="Food Tech">Food Tech</li>' + '<li title="Cad Cam">Cad Cam</li>' + '</ul>' + '</div>');
@@ -551,7 +632,7 @@ $(document).ready(function() {
 						$("#subjectSelect").remove()
 					});
 					$("#subject").fadeIn(100);
-					$('#main').append('<div class="multiChoice" id="areaSelect">' + '<div class="boxTop">Area</div>' + '<ul>' + '<li title="Research">Research</li>' + '<li title="Ideas">Ideas</li>' + '<li title="Development">Development</li>' + '<li title="Planning">Planning</li>' + '<li title="Making">Making</li>' + '<li title="Evaluation">Evaluation</li>' + '</ul>' + '</div>');
+					$('#main').append('<div class="multiChoice" id="areaSelect">' + '<div class="boxTop">Area</div>' + '<ul>' + '<li title="Research">Research</li>' + '<li title="Ideas">Ideas</li>' + '<li title="Specification">Specification</li>' + '<li title="Development">Development</li>' + '<li title="Planning">Planning</li>' + '<li title="Making">Making</li>' + '<li title="Evaluation">Evaluation</li>' + '</ul>' + '</div>');
 					$("#areaSelect").delay(100).fadeIn(100);
 					$("#areaSelect li").hover(
 					
