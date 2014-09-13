@@ -2,6 +2,39 @@
 
 ##Developed by Michael Crinnion (crin@crin.co.uk)
 
+OATS (β 0.2.0) // New colour scheme and conditional subject areas.
+
+	FEATURES
+	
+		UX
+			- Subject areas are now specific to the year group of the selected
+			class. Still hard coded.
+			
+		UI
+			- New colour scheme
+			
+		Admin
+			- Added basic but working versionack office script for scoring each
+			student based on their assessments and listing them in descending
+			order for purpose of class setting
+			
+	GENERAL
+		- Fixed positioning of Save box and "Homework" to "Hwk" on Mark cards.
+		- Character length of teacher comment increased to 480 from 400.
+		- Removed printFriendly DOM element, not working as expected and
+		creating duplicate cards in view mode
+
+OATS (β 0.1.0) // New login system - move to beta!
+
+	FEATURES
+	
+		UX
+			- New (proper) login (and logout) implementation using 'per user'
+			usernames and passwords and proper session management.
+			
+		UI
+			- New Logo
+			
 OATS (α 0.0.5) // More new features
 
 	FEATURES

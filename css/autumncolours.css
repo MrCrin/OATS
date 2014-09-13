@@ -1,0 +1,279 @@
+@charset "utf-8";
+/* Style Sheet for OATS Main UI */
+
+::-webkit-scrollbar {
+	background-color: #333;
+}
+ 
+::-webkit-scrollbar-track {
+	background-color: #333;
+}
+
+::-webkit-scrollbar-corner{
+	background-color: #333;
+}
+ 
+::-webkit-scrollbar-thumb {
+	background-color: rgba(255,255,255,0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(255,255,255,1);
+}
+
+
+body{
+	color:#222;
+}
+
+
+#loginForm{
+	color: #FFFFFF;
+}
+
+#loginTitle{
+	color: #FFFFFF;
+	background: #613829;
+	border-bottom: solid 2px #fff;
+}
+
+#login{
+	color: #333;
+	border: solid 1px #6FD1FB;
+}
+
+#register{
+	background: #613829;
+	color: #FFFFFF;
+}
+
+#build{
+	color:#F80043;
+}
+
+footer{
+	color: #FFFFFF;
+	background: #613829;
+	border-top: solid 2px #fff;
+}
+
+#topnav{
+	color: #FFFFFF;
+	background: #43271c;
+	border-bottom: solid 2px #fff;
+	background-image:url(../img/oatsMono2013.png); 
+	background-repeat:no-repeat;
+	background-attachment:fixed;
+	background-position:15px 5px;
+}
+
+#dialogConfirm{
+	border: solid 2px #F80043;
+	background:#FEC6D5;
+}
+
+.ui-button{ /*jQuery UI created class*/
+	color: #333;
+	background: #fff;
+	border: solid 1px #6FD1FB;
+}
+
+ul.menu li:hover{
+	background:#613829;
+}
+.menuOption{
+	background:#613829;
+}
+.menuOption:hover{
+	color:#333;
+	background:#fff
+}
+
+.ui-menu, .ui-menu a{
+	background:#613829;
+	color:#fff;
+}
+
+.ui-menu:hover, .ui-menu a:hover{
+	color:#333;
+	background:#fff
+}
+
+li .ui-menu-item{
+	color:#fff;
+}
+
+#userSelect, #subjectSelect, #areaSelect{
+	background:#613829;
+}
+
+#userSelect ul, #subjectSelect ul, #areaSelect ul{
+	background:#613829;
+}
+
+#userSelect ul li, #subjectSelect ul li, #areaSelect ul li{
+	color:#fff;
+}
+
+#userSelect ul li:hover, #subjectSelect ul li:hover, #areaSelect ul li:hover{
+	color:#333;
+	background:#fff
+}
+
+
+.boxTop{
+	background-color:#43271c;
+	border-bottom: solid 2px #fff;
+	color:#fff;
+	z-index:0;
+}
+
+#mainTitle{
+	color: #FFFFFF;
+	background: #864932;
+	border-bottom: solid 2px #fff;
+}
+
+.studentContainer{
+	background: #e5dfdc;
+}
+
+#scrollTopDisplay{
+	color:#fff;
+}
+
+.studentName{
+	background-color: #613829;
+	color: #fff;
+}
+
+.studentTechClass{
+	background-color: #613829;
+	color: #fff;
+}
+
+.studentTarget{
+	background-color: #613829;
+	border-left: solid 1px #fff;
+	color: #fff;
+}
+
+.studentAvg{
+	background-color: #613829;
+	color: #fff;
+}
+
+.floatingHeader {
+	background-color: #613829;
+	color: #fff;
+}
+
+input:focus, textarea:focus {
+    outline: none !important;
+}
+
+input:disabled, textarea:disabled{
+	color:#999;
+	border-color:#999;
+}
+
+.editableBy{
+	border: solid 2px #F80043;
+	background:#FEC6D5;
+}
+
+.inputAssessComment{
+	border: solid 1px #613829;
+}
+
+.inputAssessLevel, .inputAssessLevelImproved, .inputAssessEffort, .inputHomework{
+	border: solid 1px #613829;
+}
+
+.inputAssessLevel:focus, .inputAssessLevelImproved:focus, .inputAssessEffort:focus, .inputHomework:focus, .inputAssessComment:focus {
+	-moz-box-shadow: 0px 0px 10px #613829;
+	-webkit-box-shadow: 0px 0px 10px #613829;
+	box-shadow: 0px 0px 10px #613829;
+}
+
+#saveAll, #expandAll, #collapseAll, #printAll{
+	color:#fff;
+	background: #444;
+	border: solid 2px #ffffff;
+}
+
+.save{
+	color: #333;
+	background: #fff;
+	border: solid 1px #613829;
+}
+
+.save:hover{
+	color: #333;
+	background: #fff;
+	border: solid 1px #613829;
+}
+
+.previousAssessTab{
+	color: #fff;
+	background: #613829;
+}
+
+.prevTeacher{
+	border-right: #fff solid 1px;
+}
+
+.prevLvlCur{
+	border-right: #fff solid 1px;
+}
+
+.prevLvlOld{
+	color:#864932;
+}
+
+.prevEff{
+	border-right: #fff solid 1px;
+}
+
+.prevHwk{
+	border-right: #fff solid 1px;
+}
+
+.prevArea{
+	border-bottom: #fff solid 1px;
+}
+
+.prevCreated, .prevUpdated, .prevSubject{
+	color: #fff;
+}
+
+.prevComment{
+	color: #fff;
+	border-top: #fff dotted 1px;
+	
+}
+
+.deleteButton{
+	background:#FFF;
+	color:#F80043;
+	border:#F80043 solid 1px;
+}
+
+.error{
+	color:#F00;
+	-moz-box-shadow: 0px 0px 10px #F80043;
+	-webkit-box-shadow: 0px 0px 10px #F80043;
+	box-shadow: 0px 0px 10px #F80043;
+	border: solid 1px #F80043;
+}
+
+#errorTray{
+	border: solid 2px #F80043;
+	background:#FEC6D5;
+}
+
+#loadingTray{
+	color:#FFF;
+	border: solid 2px #FFF;
+	background:#333;
+}

@@ -36,7 +36,114 @@ header{
 	position:absolute;
 	left:0px;
 	top:0px;
+}
+
+#loginForm{
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px;
+	-moz-box-shadow: 0px 0px 10px #000;
+	-webkit-box-shadow: 0px 0px 10px #000;
+	box-shadow: 0px 0px 10px #000;
+	width:400px;
+	height:210px;
+	background: #1D0048;
+	color: #FFFFFF;
+	margin-right:auto;
+	margin-left:auto;
+	margin-top:175px;
+	position:relative;
+}
+
+#logo{
+	width:400px;
+	height:100px;
+	background-image:url(../img/oatsLogo2013.png);
+	position:absolute;
+	top:-130px;
+}
+
+#loginTitle{
+	-moz-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px;
+	font-size:20px;
+	color: #FFFFFF;
+	width: 385px;
+	height: 40px;
+	line-height: 40px;
+	background: #04A1E4;
+	padding-left:15px;
+	border-bottom: solid 2px #6309E8;
+}
+
+#usernameLabel{
+	position:absolute;
+	left:15px;
+	top:55px;
+}
+
+#uField{
+	position:absolute;
+	left:125px;
+	top:55px;
+	width:257px;
+}
+
+#passwordLabel{
+	position:absolute;
+	left:15px;
+	top:105px;
+}
+
+#pField{
+	position:absolute;
+	left:125px;
+	top:105px;
+	width:257px;
+}
+
+
+#login{
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-ms-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
+	width:100px;
+	height:40px;
+	line-height:40px;
+	font-size:20px;
+	color: #333;
+	text-align:center;
+	background: #fff;
+	border: solid 1px #6FD1FB;
 	cursor:pointer;
+	position:absolute;
+	top:150px;
+	right:15px;
+}
+
+#logout{
+	width:40px;
+	height:40px;
+	background-image:url(../img/logout.png);
+	margin:10px;
+	cursor:pointer;
+	position:fixed;
+	bottom:20px;
+	right:15px;
+}
+
+#register{
+	width:400px;
+	height:210px;
+	background: #1D0048;
+	color: #FFFFFF;
+	margin-right:auto;
+	margin-left:auto;
+	margin-top:100px;
+	position:relative;
+	padding:15px;
+	line-height:30px;
 }
 
 #build{
@@ -78,7 +185,7 @@ footer{
 	-moz-box-shadow: 0px 0px 10px #000;
 	-webkit-box-shadow: 0px 0px 10px #000;
 	box-shadow: 0px 0px 10px #000;
-	background-image:url(../img/oatsMono.png);
+	background-image:url(../img/oatsMono2013.png); 
 	background-repeat:no-repeat;
 	background-attachment:fixed;
 	background-position:15px 5px;
@@ -126,10 +233,6 @@ footer{
 	overflow-x:hidden;
 	overflow-y:scroll;
 	padding-top:15px;
-	background-image:url(../img/oats.png);
-	background-attachment:fixed;
-	background-position:bottom right;
-	background-repeat:no-repeat;
 }
 
 #loadingLightshade{
@@ -411,7 +514,7 @@ li .ui-menu-item{
 	box-shadow: 0px 0px 10px #000;
 	display:none;
 	position:relative;
-	padding-top:225px;
+	padding-top:245px;
 	padding-bottom:15px;
 }
 
@@ -524,7 +627,7 @@ input:disabled, textarea:disabled{
 
 .inputAssessComment{
 	width:430px;
-	height:155px;
+	height:175px;
 	position:absolute;
 	top:55px;
 	left:15px;
@@ -532,7 +635,7 @@ input:disabled, textarea:disabled{
 	padding:10px;
 }
 
-.inputAssessLevel, .inputAssessLevelImproved, .inputAssessEffort{
+.inputAssessLevel, .inputAssessLevelImproved, .inputAssessEffort, .inputHomework{
 	width:25px;
 	position:absolute;
 	left:558px;
@@ -541,7 +644,7 @@ input:disabled, textarea:disabled{
 	border: solid 1px #04A1E4;
 }
 
-.inputAssessLevel:focus, .inputAssessLevelImproved:focus, .inputAssessEffort:focus, .inputAssessComment:focus {
+.inputAssessLevel:focus, .inputAssessLevelImproved:focus, .inputAssessEffort:focus, .inputHomework:focus, .inputAssessComment:focus {
 	-moz-box-shadow: 0px 0px 10px #04A1E4;
 	-webkit-box-shadow: 0px 0px 10px #04A1E4;
 	box-shadow: 0px 0px 10px #04A1E4;
@@ -559,10 +662,20 @@ input:disabled, textarea:disabled{
 	top:133px;
 }
 
+.inputHomework{
+	top:175px;
+}
+
 .inputAssessLevelLabel{
 	position:absolute;
 	top:56px;
 	left:514px;
+}
+
+.inputHomeworkLabel{
+	position:absolute;
+	top:175px;
+	left:519px;
 }
 
 .inputAssessEffortLabel{
@@ -570,6 +683,7 @@ input:disabled, textarea:disabled{
 	top:95px;
 	left:510px;
 }
+
 .inputAssessLevelImprovedLabel{
 	position:absolute;
 	top:134px;
@@ -626,7 +740,7 @@ input:disabled, textarea:disabled{
 	cursor:pointer;
 	display:none;
 	position:absolute;
-	top: 189px;
+	top: 209px;
 	right: 15px;
 }
 
@@ -674,7 +788,7 @@ input:disabled, textarea:disabled{
 	height:205px;
 }
 
-.prevTeacher, .prevLvlCur, .prevLvlOld, .prevEff, .prevArea{
+.prevTeacher, .prevLvlCur, .prevLvlOld, .prevEff, .prevArea, .prevHwk{
 	height:26px;
 	line-height:26px;
 	width:50px;
@@ -690,15 +804,21 @@ input:disabled, textarea:disabled{
 
 .prevLvlCur{
 	left:100px;
+	border-right: #fff solid 1px;
 }
 
 .prevLvlOld{
-	left:135px;
+	left:205px;
 	color:#666;
 }
 
 .prevEff{
 	left:50px;
+	border-right: #fff solid 1px;
+}
+
+.prevHwk{
+	left:150px;
 	border-right: #fff solid 1px;
 }
 

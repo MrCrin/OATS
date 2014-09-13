@@ -1,10 +1,6 @@
 <?
-$link = mysql_connect('localhost', 'web86-techassess', '12qwas');
-if (!$link) {
-    die("fail");
-}
-
-mysql_select_db("web86-techassess", $link);
+require("config.php");
+require("connect.php");
 
 $did = $_GET[did];
 

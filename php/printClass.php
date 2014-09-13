@@ -1,5 +1,4 @@
 <?
-
 require_once("../dompdf/dompdf_config.inc.php");
 
 require("config.php");
